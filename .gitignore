@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+work/
+renders/
+review/
+stills/
+voice/
+*.mp4
+*.wav

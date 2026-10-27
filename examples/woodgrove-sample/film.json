@@ -1,0 +1,75 @@
+{
+  "name": "Woodgrove small-business lending concept film (sample)",
+  "tmp": "work",
+  "prototype": {
+    "dir": "proto",
+    "file": "woodgrove.html",
+    "warmup_s": 30,
+    "keys": {"hide": "h", "replay": "r", "next": "ArrowRight"}
+  },
+  "narration": {
+    "script": "narration.txt",
+    "audio": "narr.wav",
+    "transcript": "narr.txt",
+    "prefix": "Host: ",
+    "gap_s": 0.6,
+    "cue_ids": "A1 A2 C1 C2 C3 E1 E2 F1 F2 F3 M1 M2 M3"
+  },
+  "voice": {"engine": "azure", "name": "en-US-AndrewMultilingualNeural", "rate": "0%"},
+  "cues": "cues.json",
+  "plan": "plan.json",
+  "crossfade_s": 0.6,
+  "capture": {"rate": 0.25, "width": 1920, "height": 1080, "jpeg_quality": 86},
+  "graphics": {
+    "file": "graphics.html",
+    "simdata": "simdata.json",
+    "title": "Woodgrove lending film graphics",
+    "concept_label": "Concept demo · Fictitious data",
+    "images": {"establishing": "images/night.jpg", "arrival": "images/arrival.jpg", "desk": "images/desk.jpg"},
+    "night": {"eyebrow": "Tuesday · 2:00 AM", "title": "While Adele *sleeps*"},
+    "sim": {
+      "eyebrow": "Overnight queue plan",
+      "title": "Playing Tuesday *forward*",
+      "counter_unit": "simulated days",
+      "counter_baseline": 2000,
+      "phase": {"baseline": "Arrival order", "search": "Trying 1,500 orders", "optimized": "Overnight plan order"},
+      "stats": [
+        {"label": "Deadline files in time", "left": 560, "before_color": "#f48120",
+         "before": "{t[today_order][ontime_files]:.1f} of {sim[deadline_files]}", "after": "{t[iq_order][ontime_files]:.0f} of {sim[deadline_files]}"},
+        {"label": "Expected to fund", "left": 1010, "before_color": "#ffffff",
+         "before": "${t[today_order][ev_m]:.2f}M", "after": "${t[iq_order][ev_m]:.2f}M"}
+      ],
+      "late_share": 0.4,
+      "badge": {"late": "Often too late", "ok": "In time"},
+      "no_deadline_label": "no deadline",
+      "axis": {
+        "start": 8, "end": 17,
+        "ticks": [[8, "8 AM"], [10, "10 AM"], [12, "12 PM"], [14, "2 PM"], [16, "4 PM"], [17, "5 PM"]],
+        "overflow": [32, 36.5], "overflow_label": "Tomorrow",
+        "bands": [[12.5, 13]],
+        "no_deadline_from": 90,
+        "day_names": ["today", "tomorrow", "Thu", "Fri"]
+      },
+      "product_short": {"Working capital line": "Working capital", "Rate-hold refinance": "Refinance"}
+    },
+    "morning": {
+      "clock_before": "Tue, Oct 27 · 7:12 AM",
+      "clock_after": "Tue, Oct 27 · 7:29 AM",
+      "name": "Adele Vance",
+      "role": "Small-business credit analyst · Woodgrove Bank",
+      "queue_kicker": "Application queue",
+      "queue_big": "9 applications",
+      "queue_small": "5 with a customer deadline · sorted by arrival"
+    },
+    "endcard": {
+      "kicker": "Concept film",
+      "title": "Every deadline file, *decided in time*",
+      "line": "Concept demo · Fictitious data · October 2026"
+    }
+  },
+  "music": {"file": "music.wav", "seed": 7},
+  "mix": {"file": "mix.wav", "music_db": -14, "voice_lufs": -16, "limit": 0.89},
+  "captions": {"enabled": true, "file": "film.ass", "font": "Poppins Medium", "size": 34, "max_chars": 72, "margin_v": 80},
+  "output": {"file": "woodgrove-film.mp4", "crf": 19},
+  "review": {"every_s": 5, "stills": {"night": [1.5, 6.0, 12.0, 17.0, 21.0], "morning": [1.6, 4.0, 7.0], "endcard": [2.5]}}
+}

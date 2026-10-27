@@ -1,0 +1,21 @@
+Woodgrove small-business lending concept film narration (sample)
+
+# Numbers and their source (examples/woodgrove-sample/make_simdata.py, seed 2710):
+#   2.43 of 5 deadline files in time in arrival order -> spoken "two or three of her five"
+#   5 of 5 in the best order; 1,500 orders tried x 2,000 days = 3,000,000 simulated days
+#   expected to fund $1.17M -> $1.37M per simulated day (one analyst) -> "per analyst-day", called illustrative
+#   nine applications in the queue, five with a customer deadline, Northwind Traders due 11:30 AM
+
+Host: This is a concept from Tredence for small-business lending. We'll follow one credit analyst, Adele Vance, at Woodgrove Bank. The bank, the people and the numbers are fictional.
+Host: Adele's queue runs in arrival order, but the customer deadlines live in notes and emails.
+Host: At two in the morning, while Adele sleeps, an agent plays her Tuesday forward.
+Host: Worked in arrival order, two or three of her five deadline files are decided in time.
+Host: So it tries fifteen hundred different orders, across three million simulated days, and keeps the one that decides all five in time.
+Host: Tuesday morning. Adele gets in just before 7:30, with nine applications waiting.
+Host: This time, she asks Copilot what to work on first.
+Host: Copilot answers from the overnight plan. Northwind Traders' equipment loan comes first, due by 11:30.
+Host: It drafts three document requests to the relationship managers.
+Host: Nothing goes out until Adele approves, and every credit decision stays with her.
+Host: Every morning starts from a plan built overnight, and every deadline file is decided in time.
+Host: On illustrative numbers, expected lending per analyst-day goes from 1.17 million dollars to 1.37 million.
+Host: The ask: let's run a 60-day shadow pilot with one lending team, measured against today's arrival order.

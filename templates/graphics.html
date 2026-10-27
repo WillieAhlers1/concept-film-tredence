@@ -1,0 +1,226 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Concept film graphics</title>
+<!--
+  Tredence concept film graphics, 1920x1080. All text, images and data come from gfx-data.js (window.GFX + window.SIM),
+  which gfx_data.py writes from film.json and the simulation data. Nothing here is customer-specific; don't edit it
+  per film. Brand: Poppins only, the closed Tredence palette, flat colour (the Charcoal photo shade is the one
+  gradient), the official logos unrecoloured, key phrases in Bright Orange (*phrase* in a title).
+  ?seg=night    establishing shot (slow push-in + kicker and title), then, when the film has simulation data:
+                phase 1 baseline order (dots = simulated outcomes, Teal on time / Bright Orange late),
+                phase 2 "trying N orders" shuffle with the counter climbing into millions,
+                phase 3 optimized order, all Teal; live stat chips.
+                Params: tSim tA0 tA1 tH tS tI0 tI1 end (seconds from window.start()). Without SIM, or with tSim >= end,
+                it is a title card on the photo: use it for a cold open too.
+  ?seg=morning  two images crossfading, clock chip, name card, work-list card. Params: tSw tLT tQ end.
+  ?seg=endcard  solid Bright Orange with the white T, as the prototype's divider: kicker, one sentence, the
+                wordmark. For a film whose prototype has no closing scene. Params: tT tL end.
+  ?seek=<s>     freeze at that time (for stills). window.start() plays from 0.
+  A missing image falls back to flat palette colour. Keep the bottom ~190 px clear: captions are burned in there.
+-->
+<style>
+@font-face{font-family:Poppins;font-weight:400;src:url(fonts/Poppins-Regular.ttf)}
+@font-face{font-family:Poppins;font-weight:500;src:url(fonts/Poppins-Medium.ttf)}
+@font-face{font-family:Poppins;font-weight:600;src:url(fonts/Poppins-SemiBold.ttf)}
+@font-face{font-family:Poppins;font-weight:700;src:url(fonts/Poppins-Bold.ttf)}
+:root{--orange:#fe5000;--teal:#6dcdb8;--green:#004e42;--deep:#8a1f04;--hi:#f48120;--char:#404041;--grey:#929497;--off:#e6e7e8;--otint:#ffede5;--ttint:#e2f5f1}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:var(--char)}
+*{box-sizing:border-box}
+body{font-family:Poppins,sans-serif;color:#fff}
+.layer{position:absolute;inset:0;opacity:0;overflow:hidden}
+.kb{position:absolute;inset:-2%;background-size:cover;background-position:center;will-change:transform}
+.shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(64,64,65,var(--a0,.72)),rgba(64,64,65,var(--a1,.18)))}
+.kicker{font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);line-height:1.2}
+.title{font-size:72px;font-weight:700;line-height:1.12;margin-top:16px;max-width:1300px}
+.hl{color:var(--orange)}
+.night-text{position:absolute;left:96px;top:120px;padding-left:32px}
+.night-text::before{content:"";position:absolute;left:0;top:4px;bottom:6px;width:8px;background:var(--orange)}
+.chip{position:absolute;display:inline-flex;align-items:center;gap:12px;padding:12px 24px;border-radius:999px;background:#fff;color:var(--char);font-size:26px;font-weight:600;border:1px solid var(--off)}
+.chip svg{width:28px;height:28px}
+.card{position:absolute;background:#fff;color:#000;border-radius:12px;border:1px solid var(--off);opacity:0;transform:translateY(16px)}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px;background:var(--orange);border-radius:12px 0 0 12px}
+.lt{left:96px;bottom:210px;padding:22px 34px 22px 40px}
+.lt b{display:block;font-size:38px;font-weight:700;line-height:1.2}
+.lt span{display:block;font-size:22px;color:var(--char);margin-top:4px}
+.qcard{left:96px;top:190px;width:500px;padding:22px 30px 24px 40px}
+.qcard .k{font-size:18px;letter-spacing:1.5px;text-transform:uppercase;color:var(--deep);font-weight:700}
+.qcard .n{font-size:46px;font-weight:700;margin-top:6px;line-height:1.15}
+.qcard .s{font-size:20px;color:var(--char);margin-top:6px;line-height:1.4}
+#sim{position:absolute;inset:0;opacity:0;background:var(--char)}
+#sim .bg{position:absolute;inset:-3%;background-position:center;background-size:cover;filter:blur(14px) saturate(.6)}
+#sim .dim{position:absolute;inset:0;background:rgba(64,64,65,.93)}
+#sim canvas{position:absolute;left:0;top:0}
+.hdr{position:absolute;left:80px;top:56px}
+.hdr .title{font-size:54px;margin-top:10px}
+.ctr{position:absolute;right:80px;top:52px;text-align:right}
+.ctr b{display:block;font-size:72px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.ctr span{font-size:22px;color:var(--off)}
+.phase{position:absolute;left:80px;top:196px;height:46px;padding:0 22px;border-radius:999px;display:flex;align-items:center;font-size:22px;font-weight:600}
+.stat{position:absolute;top:196px;height:46px;padding:0 18px;border-radius:12px;display:flex;align-items:center;gap:12px;font-size:20px;font-weight:500;color:var(--off);background:rgba(255,255,255,.06);border:1px solid rgba(230,231,232,.28)}
+.stat b{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+#endcard{background:var(--orange)}
+#endcard .k{position:absolute;left:100px;top:330px;font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase}
+#endcard .t{position:absolute;left:100px;top:385px;width:1150px;font-size:72px;font-weight:700;line-height:1.12}
+#endcard .t-mark{position:absolute;left:1320px;top:240px;width:498px;height:500px}
+#endcard .wm{position:absolute;left:100px;top:742px;width:520px;height:auto}
+#endcard .ln{position:absolute;left:100px;top:672px;font-size:26px;font-weight:500}
+#endcard .hl{color:#fff}
+.concept{position:absolute;left:12px;bottom:12px;z-index:9;display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(64,64,65,.92);color:#fff;font-size:14px;line-height:18px;font-weight:500}
+</style></head><body>
+<div id="night" class="layer"><div class="kb"></div><div class="shade"></div>
+  <div class="night-text"><div class="kicker" id="n_eb"></div><div class="title" id="n_ti"></div></div></div>
+<div id="sim">
+  <div class="bg"></div><div class="dim"></div>
+  <canvas id="cv" width="1920" height="1080"></canvas>
+  <div class="hdr"><div class="kicker" id="s_eb"></div><div class="title" id="s_ti"></div></div>
+  <div class="ctr"><b id="ctr">0</b><span id="s_unit"></span></div>
+  <div class="phase" id="phase"></div>
+</div>
+<div id="m1" class="layer"><div class="kb"></div></div>
+<div id="m2" class="layer"><div class="kb"></div>
+  <div class="card lt" id="lt"><b id="lt_n"></b><span id="lt_r"></span></div>
+  <div class="card qcard" id="qc"><div class="k" id="q_k"></div><div class="n" id="q_n"></div><div class="s" id="q_s"></div></div></div>
+<div class="chip" id="clk" style="left:96px;top:96px;opacity:0"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#fe5000" stroke-width="1.8"/><path d="M10 5.5V10l3 2" fill="none" stroke="#fe5000" stroke-width="1.8" stroke-linecap="round"/></svg><span id="clkt"></span></div>
+<div id="endcard" class="layer"><div class="k" id="e_k"></div><div class="t" id="e_t"></div><div class="ln" id="e_l"></div>
+  <img class="t-mark" src="brand/t-white.png" alt=""><img class="wm" src="brand/wordmark-tagline-white.svg" alt="Tredence Beyond Possible"></div>
+<div class="concept" id="concept"></div>
+<script src="gfx-data.js"></script>
+<script>
+const G = window.GFX, SIM = window.SIM, S = G.sim || {}, AX = S.axis || {}, MO = G.morning, EC = G.endcard || {};
+const Q = new URLSearchParams(location.search);
+const P = k => parseFloat(Q.get(k));
+const SEG = Q.get('seg') || 'night';
+const HAS_SIM = !!(SIM && G.sim);
+const $ = id => document.getElementById(id);
+const clamp = (x,a,b)=>Math.max(a,Math.min(b,x));
+const ease = x => x<0?0:x>1?1:(x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2);
+const lerp=(a,b,x)=>a+(b-a)*x;
+const C = {orange:'254,80,0', teal:'109,205,184', off:'230,231,232', char:'64,64,65'};
+let T0 = null; window.start = () => { T0 = performance.now(); };
+// ---------- text and images from gfx-data.js ----------
+if (G.title) document.title = G.title;
+// "*key phrase*" in a title is drawn in Bright Orange, as on Tredence slides
+function rich(el, s){ el.textContent=''; String(s||'').split(/(\*[^*]+\*)/).forEach(p=>{ if(!p) return;
+  if(p.startsWith('*')&&p.endsWith('*')){ const h=document.createElement('span'); h.className='hl'; h.textContent=p.slice(1,-1); el.appendChild(h); }
+  else el.appendChild(document.createTextNode(p)); }); }
+const IM = G.images || {};
+function setImg(el, key, fallback){ if (IM[key]) el.style.backgroundImage = `url("${IM[key]}")`; else el.style.background = fallback; }
+setImg($('night').querySelector('.kb'), 'establishing', 'var(--char)');
+setImg(document.querySelector('#sim .bg'), 'establishing', 'var(--char)');
+setImg($('m1').querySelector('.kb'), 'arrival', 'var(--ttint)');
+setImg($('m2').querySelector('.kb'), 'desk', 'var(--otint)');
+if (!IM.establishing) $('night').querySelector('.shade').style.display='none';
+$('n_eb').textContent = G.night.eyebrow||''; rich($('n_ti'), G.night.title);
+if (HAS_SIM) { $('s_eb').textContent = S.eyebrow||''; rich($('s_ti'), S.title); $('s_unit').textContent = S.counter_unit||''; }
+$('lt_n').textContent = MO.name||''; $('lt_r').textContent = MO.role||'';
+$('q_k').textContent = MO.queue_kicker||''; $('q_n').textContent = MO.queue_big||''; $('q_s').textContent = MO.queue_small||'';
+if (!MO.queue_big) $('qc').style.display='none';
+$('clkt').textContent = MO.clock_before||'';
+if (!MO.clock_before) $('clk').style.display='none';
+$('e_k').textContent = EC.kicker||''; rich($('e_t'), EC.title); $('e_l').textContent = EC.line||'';
+$('concept').textContent = G.concept_label || 'Concept demo · Fictitious data';
+if (SEG==='endcard' && EC.line) $('concept').style.display='none';   // the end card's own line carries the label
+(S.stats||[]).forEach((st,k)=>{ const d=document.createElement('div'); d.className='stat'; d.id='st'+(k+1); d.style.left=st.left+'px';
+  const l=document.createElement('span'); l.textContent=st.label; const v=document.createElement('b'); v.id='v'+(k+1); v.textContent='–';
+  d.append(l,v); $('sim').appendChild(d); });
+['400','500','600','700'].forEach(w=>document.fonts.load(`${w} 20px Poppins`));
+// ---------- simulation layout ----------
+const cv=$('cv'), x=cv.getContext('2d');
+const L=80, PX0=600, PX1=1560, TZ0=1610, TZ1=1840, TOP=300, RH=40;
+let rows=[], N=0, late4=new Set(), fifoSlot=[], iqSlot=[], shuffles=[], jit=[], xt=()=>0;
+function rng(seed){ let s=seed; return ()=>{ s=(s*1664525+1013904223)%4294967296; return s/4294967296; }; }
+if (HAS_SIM) {
+  const A0=AX.start, A1=AX.end, O0=AX.overflow[0], O1=AX.overflow[1];
+  xt = h => h<=A1 ? PX0+(clamp(h,A0,A1)-A0)/(A1-A0)*(PX1-PX0) : TZ0+(clamp(h,O0,O1)-O0)/(O1-O0)*(TZ1-TZ0);
+  rows = SIM.rows; N = rows.length;
+  // rows late in more than late_share of baseline days get the "often too late" badge
+  late4 = new Set(rows.map((r,i)=>i).filter(i=>{const r=rows[i]; if(r.dl>=AX.no_deadline_from) return false; return r.A.filter(v=>v>r.dl).length/r.A.length>S.late_share;}));
+  fifoSlot = new Array(N); iqSlot = new Array(N);
+  SIM.fifo.forEach((ri,k)=>fifoSlot[ri]=k); SIM.iq.forEach((ri,k)=>iqSlot[ri]=k);
+  const R = rng(7); shuffles=[0,1,2].map(()=>{ const a=[...Array(N).keys()]; for(let i=N-1;i>0;i--){const j=Math.floor(R()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} const s=new Array(N); a.forEach((ri,k)=>s[ri]=k); return s; });
+  jit = rows.map((_,i)=>{ const r=rng(100+i); return Array.from({length:300},()=>(r()-.5)*20); });
+}
+function dlLabel(d){ if(d>=AX.no_deadline_from) return S.no_deadline_label; const day=AX.day_names[Math.floor(d/24)]; let h=d%24; const H=Math.floor(h), M=Math.round((h-H)*60); const ap=H>=12?'PM':'AM'; const h12=(H%12)||12; return `${day} ${h12}:${String(M).padStart(2,'0')} ${ap}`; }
+const shortProd = p => { for (const [a,b] of Object.entries(S.product_short||{})) p=p.replace(a,b); return p; };
+function slotAt(i,t){
+  const tS=P('tS'), tI0=P('tI0');
+  const steps=[[tS,fifoSlot],[tS+0.55,shuffles[0]],[tS+1.1,shuffles[1]],[tS+1.65,shuffles[2]],[tI0-0.35,iqSlot]];
+  let prev=fifoSlot[i], cur=fifoSlot[i], t0=-1;
+  for(const [ts,s] of steps){ if(t>=ts){ prev=cur; cur=s[i]; t0=ts; } }
+  if(t0<0) return fifoSlot[i];
+  return lerp(prev,cur,ease((t-t0)/0.5));
+}
+function roundRect(X,Y,w,h,r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+w,Y,X+w,Y+h,r); x.arcTo(X+w,Y+h,X,Y+h,r); x.arcTo(X,Y+h,X,Y,r); x.arcTo(X,Y,X+w,Y,r); x.closePath(); }
+function drawSim(t){
+  x.clearRect(0,0,1920,1080);
+  const tA0=P('tA0'), tA1=P('tA1'), tH=P('tH'), tS=P('tS'), tI0=P('tI0'), tI1=P('tI1');
+  const A1=AX.end, O0=AX.overflow[0], O1=AX.overflow[1];
+  x.font='600 17px Poppins'; x.fillStyle=`rgba(${C.off},.9)`; x.textAlign='center';
+  AX.ticks.forEach(([h,l])=>{ const X=xt(h); x.fillText(l,X,TOP-18); x.strokeStyle='rgba(255,255,255,.08)'; x.lineWidth=1; x.beginPath(); x.moveTo(X,TOP-6); x.lineTo(X,TOP+N*RH); x.stroke(); });
+  x.fillStyle='rgba(255,255,255,.05)'; x.fillRect(TZ0-14,TOP-6,TZ1-TZ0+28,N*RH+6);
+  x.fillStyle=`rgba(${C.off},.9)`; x.fillText(AX.overflow_label,(TZ0+TZ1)/2,TOP-18);
+  (AX.bands||[]).forEach(([a,b])=>{ x.fillStyle='rgba(255,255,255,.04)'; x.fillRect(xt(a),TOP-6,xt(b)-xt(a),N*RH+6); });
+  const showD = t>=tI0;
+  for(let i=0;i<N;i++){
+    const r=rows[i]; const y=TOP+slotAt(i,t)*RH+RH/2; const isLate=late4.has(i);
+    if(isLate && t>=tH){ const a=clamp((t-tH)/0.4,0,1); x.fillStyle = showD ? `rgba(${C.teal},${.12*a})` : `rgba(${C.orange},${.13*a})`; x.fillRect(L-12,y-RH/2+3,TZ1-L+26,RH-6); }
+    x.textAlign='left'; x.fillStyle='#fff'; x.font='600 19px Poppins'; x.fillText(r.name,L,y-3);
+    x.fillStyle=`rgba(${C.off},.92)`; x.font='400 15px Poppins'; x.fillText(shortProd(r.product)+' · '+dlLabel(r.dl),L,y+16);
+    if(isLate && t>=tH){ const txt= showD?S.badge.ok:S.badge.late; x.font='600 15px Poppins'; const w=x.measureText(txt).width+20; const X=470; x.fillStyle= showD?`rgb(${C.teal})`:`rgb(${C.orange})`; roundRect(X,y-13,w,26,13); x.fill(); x.fillStyle='#000'; x.fillText(txt,X+10,y+6); }
+    if(r.dl<=O1){ const X=xt(r.dl); x.strokeStyle='rgba(255,255,255,.9)'; x.lineWidth=2; x.beginPath(); x.moveTo(X,y-15); x.lineTo(X,y+15); x.stroke(); x.fillStyle='#fff'; x.beginPath(); x.moveTo(X,y-15); x.lineTo(X+9,y-11); x.lineTo(X,y-7); x.fill(); }
+    // dots: one per simulated day; A = baseline order, D = optimized order
+    const series = showD ? r.D : r.A; const tt0 = showD?tI0:tA0, tt1 = showD?tI1:tA1;
+    let fade=1; if(!showD && t>tS) fade=clamp(1-(t-tS)/0.6,0,1);
+    if(fade<=0) continue;
+    const n = Math.floor(clamp((t-tt0)/(tt1-tt0),0,1)*series.length);
+    for(let k=0;k<n;k++){ const v=series[k]; const on=v<=r.dl; const X=xt(v); const age=(t-(tt0+(k/series.length)*(tt1-tt0)));
+      const a=clamp(age/0.25,0,1)*fade; x.fillStyle = on?`rgba(${C.teal},${.6*a})`:`rgba(${C.orange},${.65*a})`; x.beginPath(); x.arc(v>A1&&v<O0?TZ0-8:X, y+jit[i][k%300], 2.7, 0, 6.3); x.fill(); }
+  }
+  // scan band during the search: flat Teal, no gradient
+  if(t>=tS && t<tI0){ const p=((t-tS)/(tI0-tS)); const X=PX0+(TZ1-PX0)*((p*3)%1); x.fillStyle=`rgba(${C.teal},.16)`; x.fillRect(X-120,TOP-6,120,N*RH+6); }
+}
+function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
+function frameNight(t){
+  const end=P('end'), tSim = HAS_SIM && !isNaN(P('tSim')) ? P('tSim') : end + 99;
+  const n=$('night'); n.style.opacity = clamp(t/0.6,0,1) * clamp(1-(t-tSim)/0.9,0,1);
+  const k=clamp(t/(Math.min(tSim,end)+1),0,1);
+  n.querySelector('.kb').style.transform=`scale(${1.04+0.05*k}) translate(${-8*k}px,0)`;
+  n.querySelector('.night-text').style.opacity = clamp((t-0.6)/0.7,0,1);
+  const s=$('sim'); s.style.opacity = HAS_SIM ? clamp((t-tSim+0.6)/0.9,0,1) : 0;
+  if (!HAS_SIM || t < tSim - 0.7) return;
+  drawSim(t);
+  const tA0=P('tA0'), tS=P('tS'), tI1=P('tI1'), CB=S.counter_baseline;
+  let c=0; if(t>=tA0) c = CB*clamp((t-tA0)/(tS-tA0),0,1); if(t>=tS) c = CB + (SIM.futures-CB)*ease(clamp((t-tS)/(tI1-tS),0,1));
+  $('ctr').textContent=fmt(c);
+  const ph=$('phase'), tI0=P('tI0'), tH=P('tH');
+  if(t<tS){ ph.textContent=S.phase.baseline; ph.style.background='rgba(255,255,255,.12)'; ph.style.color='#fff'; }
+  else if(t<tI0){ ph.textContent=S.phase.search; ph.style.background=`rgba(${C.teal},.2)`; ph.style.color='#fff'; }
+  else { ph.textContent=S.phase.optimized; ph.style.background=`rgb(${C.teal})`; ph.style.color='#000'; }
+  const sv = t>=tI0+1.2, sa = t>=tH-0.2;
+  S.stats.forEach((st,k)=>{ $('st'+(k+1)).style.opacity=(sa?1:0); const v=$('v'+(k+1));
+    v.textContent = sv ? st.after : st.before; v.style.color = sv ? `rgb(${C.teal})` : (st.before_color||'#fff'); });
+}
+function frameMorning(t){
+  const tSw=P('tSw'), tLT=P('tLT'), tQ=P('tQ'), end=P('end');
+  $('m1').style.opacity = clamp(t/0.5,0,1);
+  $('m1').querySelector('.kb').style.transform=`scale(${1.03+0.06*clamp(t/(tSw+1),0,1)}) translate(${10*clamp(t/(tSw+1),0,1)}px,0)`;
+  $('m2').style.opacity = clamp((t-tSw)/0.9,0,1);
+  $('m2').querySelector('.kb').style.transform=`scale(${1.03+0.05*clamp((t-tSw)/(end-tSw),0,1)}) translate(${-10*clamp((t-tSw)/(end-tSw),0,1)}px,0)`;
+  const c=$('clk'); c.style.opacity=clamp((t-0.5)/0.5,0,1); $('clkt').textContent = t<tSw+0.4 ? MO.clock_before : (MO.clock_after||MO.clock_before);
+  const lt=$('lt'), a=clamp((t-tLT)/0.5,0,1); lt.style.opacity=a; lt.style.transform=`translateY(${16*(1-a)}px)`;
+  const qc=$('qc'), b=clamp((t-tQ)/0.5,0,1); qc.style.opacity=b; qc.style.transform=`translateY(${16*(1-b)}px)`;
+}
+function frameEnd(t){
+  const tT=isNaN(P('tT'))?0.5:P('tT'), tL=isNaN(P('tL'))?1.4:P('tL');
+  $('endcard').style.opacity = 1;
+  const a=clamp((t-tT)/0.5,0,1), b=clamp((t-tL)/0.5,0,1);
+  ['e_k','e_t'].forEach(id=>{ const e=$(id); e.style.opacity=a; e.style.transform=`translateY(${14*(1-a)}px)`; });
+  ['e_l'].forEach(id=>{ $(id).style.opacity=b; });
+  document.querySelector('#endcard .wm').style.opacity=b;
+}
+function loop(now){
+  const seek = Q.get('seek');
+  const t = seek!=null ? parseFloat(seek) : (T0==null ? 0 : (now-T0)/1000);
+  if(SEG==='night') frameNight(t); else if(SEG==='morning') frameMorning(t); else frameEnd(t);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script></body></html>

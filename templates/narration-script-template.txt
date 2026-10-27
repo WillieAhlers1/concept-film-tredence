@@ -1,0 +1,33 @@
+<Concept> concept film narration
+
+# One voice. One idea per line, 1.5-13 s spoken. 25-40 lines for a 2:30-3:30 film.
+# Each "Host:" line becomes one cue (A1, B1, ...) in film.json narration.cue_ids, in order.
+# The Tredence voice (references/narration.md): start in the customer's world; the last mile (the everyday decision
+# that changes); "we" and "you" together; calm, specific, confident, never promotional; no exclamation marks.
+# Never: leverage, unlock, journey, flywheel, empower, seamless, best-in-class, world-class, game-changing,
+# synergy, harness, cutting-edge, "Tredence Inc." or TREDENCE in capitals.
+# Think big, claim small: the business shift is ambitious; every number is from the brief's data sheet or the
+# engine output, rounded truthfully for the ear ("seven or eight of eleven" for 7.7, "about one in five" for 21%),
+# and impact is called illustrative once. Time freed is capacity for more or better work, never a cut in staff.
+# Say once, in the first line, that the company, people and numbers are fictional.
+# The customer's own name only if the user confirmed it may be used; inside the story the company stays fictitious.
+# Close: how the business could work and what it could be worth, then one ask, spoken as the ask appears on screen.
+# Lines starting with # are ignored. check_film.py checks all of this.
+
+Host: This is a concept from Tredence for <Customer or industry>. We'll follow one <role>, <Persona name>, at <Fictitious company>, through one <weekday>. The company, the people and the numbers are fictional.
+Host: Every <period>, <Persona first name> decides <the everyday decision that doesn't change today>.
+Host: The data to decide it well already exists. It's in <place one>, <place two> and <place three>, and nobody has time to pull it together.
+Host: So today, <how the decision gets made instead: by habit, by arrival order, by the loudest request>.
+Host: At two in the morning, while <Persona first name> sleeps, an agent plays <her/his> <weekday> forward.
+Host: In each simulated day, <what varies>, and <what can go wrong>.
+Host: Worked in <today's order>, <N> of these <items> are often <late>.
+Host: So it tries thousands of different orders, across millions of simulated days, and keeps the one that <outcome>.
+Host: By 2:15, the plan is ready, with <prepared work> drafted for <Persona first name>.
+Host: The agent can read, simulate and draft, but it can't <the decisions that stay with people>.
+Host: <Weekday> morning. <Persona first name> gets in just before 7:30, with <N items> waiting.
+Host: This time, <she/he> asks Copilot what to work on first.
+Host: <The answer, with the one or two numbers that matter, rounded for the ear, and where they come from.>
+Host: <Each further scene: one or two lines on what the agent does and what the person decides.>
+Host: <The business from above: what this means across the book, the region or the network, on illustrative numbers.>
+Host: <How the business could work: from today's constraint to the new way, in operating terms.>
+Host: Let's start with <a specific, small, measurable next step>, measured against <today's baseline>.
